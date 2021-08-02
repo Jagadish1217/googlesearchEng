@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+<head>
+    <title>ES6 - II</title>
+    <style>
+        body {
+            margin: 0px;
+            padding: 0px;
+        }
+
+        .header {
+            position: fixed;
+            left: 0;
+            top: 0;
+            height: 55px;
+            padding-left: 2.1%;
+            padding-right: 2.1%;
+            width: 96%;
+            background-color: rgb(201, 201, 197);
+            display: flex;
+            font-size: 20px;
+            color: gray;
+        }
+
+        .header>div {
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-left: 20px;
+            margin-right: 20px;
+            padding-left: 10px;
+            padding-right: 10px;
+            
+        }
+        img {
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-left: 20px;
+            margin-right: 20px;
+            padding-left: 10px;
+            padding-right: 10px; 
+        }
+        input,button {
+            padding: 5px;
+            font-size: 20px;
+            border-radius: 14px;
+            border: none;
+            cursor: pointer;
+        }
+        input:focus,button:focus{
+            outline: none;
+        }
+
+        #query{
+            width: 400px;
+        }
+        .cont{
+            margin-top: 56px;
+            padding-top: 30px;
+            width: 80%;
+            padding-right: 10%;
+            padding-left: 10%;
+        }
+        .cont>div{
+            padding: 10px;
+            margin: 5px;
+        }
+        .urlfirst{
+            font-size: 14px;
+            cursor: pointer;
+            font-weight: 500;
+        }
+        .titlefirst{
+            font-size: 20px;
+            color: #1a0dab;
+            line-height: 1.3;
+            cursor: pointer;
+        }
+        .titlefirst:hover{
+            text-decoration: underline;
+        }
+
+        
+    </style>
+</head>
+
+<body>
+
+    <div class="header">
+        <img src="https://1000logos.net/wp-content/uploads/2016/11/google_logo.png" alt="">
+        <div>
+            <input type="text" id="query">
+            <button onclick="searchAns()">Search</button>
+        </div>
+    </div>
+    <div class="cont" id="cont" ></div>
+
+
+    </div>
+
+</body>
+
+</html>
+<script>
+
+    let resultDiv = document.getElementById("cont");
+    async function searchAns() {
+        try {
+            var search = document.getElementById("query").value;
+            document.getElementById("query").value=null;
+            let res = await fetch(`http://api.serpstack.com/search?access_key=6318b79504afc26d622eafc8c306e79f&num=30&google_domain=google.com&query=${search}`);
+            let data = await res.json();
+            console.log("data: ", data);
+
+            let { organic_results } = data;
+            //console.log(organic_results);
+            resultDiv.innerHTML = null;
+
+            organic_results.forEach(({ title,url }) => {
+                //console.log("Title: ",title);
+                //console.log("url: ", url);
+                var div = document.createElement("div");
+                var div1 = document.createElement("div");
+                var div2 = document.createElement("div");
+                div1.innerHTML = url;
+                div1.setAttribute("class","urlfirst");
+                
+                div2.innerHTML = title;
+                div2.setAttribute("class", "titlefirst");
+
+                div.append(div1,div2);
+                resultDiv.append(div);
+                div1.addEventListener("click", function () {
+                    window.open(url);
+                });
+                div2.addEventListener("click", function () {
+                    window.open(url);
+                });
+            });
+        }
+        catch (err) {
+            console.log("err:", err);
+        }
+
+
+    }
+
+
+   
+</script>
